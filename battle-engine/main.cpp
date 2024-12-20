@@ -3,6 +3,14 @@
 #include <string>
 #include <random>
 #include <map>
+#include <fstream>
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
+std::ifstream f("settings.json");
+json data = json::parse(f);
+
 // the rng ranges might be off. not sure. have to test later.
 int rangeRng(int lowest, int highest) {
     std::random_device rd;
@@ -91,9 +99,11 @@ void start(Player& player1, Player& player2) {
 
 int main() {
     Player john;
-    john.name = "John";
+    john.name = data["PLAYER1"]["NAME"];
+    john.health = data["PLAYER2"]["STARTING_HEALTH"];
     Player tim;
-    tim.name = "Tim";
+    tim.name = data["PLAYER2"]["NAME"];
+    tim.health = data["PLAYER2"]["STARTING_HEALTH"];
     start(john, tim);
     return 0;
 }

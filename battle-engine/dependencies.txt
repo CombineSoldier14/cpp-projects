@@ -1,0 +1,2 @@
+(haven't learned CMake yet)
+JSON library used: https://github.com/nlohmann/json/

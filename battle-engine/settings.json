@@ -1,0 +1,10 @@
+{
+    "PLAYER1":{
+        "NAME":"John",
+        "STARTING_HEALTH":100
+    },
+    "PLAYER2":{
+        "NAME":"Tim",
+        "STARTING_HEALTH":100
+    }
+}
