@@ -66,7 +66,7 @@ void turn(Player& player1, Player& player2) {
     std::string x;
     int flag = 0;
     std::cout << "> ";
-    while (flag == 0) {
+    while (!flag) {
         std::getline(std::cin, x);
         try {
             attacks[x]();
