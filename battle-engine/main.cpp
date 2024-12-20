@@ -8,6 +8,8 @@
 
 using json = nlohmann::json;
 
+std::string version = "1.1.1";
+
 std::ifstream f("settings.json");
 json data = json::parse(f);
 
@@ -77,6 +79,7 @@ void turn(Player& player1, Player& player2) {
 }
 
 void start(Player& player1, Player& player2) {
+    std::cout << "Made with BattleEngine v" << version << " by CombineSoldier14";
     std::cout << "-------------------------------------------------------\n";
     std::cout << "The battle has begun!\n" << player1.name << " vs " << player2.name << "\n\n";
     while (player1.health > 0 && player2.health > 0) {  // Fix the condition to end when both players' health are 0 or less
