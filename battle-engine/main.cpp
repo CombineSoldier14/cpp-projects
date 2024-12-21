@@ -9,7 +9,7 @@
 
 using json = nlohmann::json;
 
-std::string version = "1.1.1";
+std::string version = "1.2.0";
 
 std::ifstream f("settings.json");
 json data = json::parse(f);
