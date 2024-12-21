@@ -23,10 +23,6 @@ int rangeRng(int lowest, int highest) {
     return rng;
 }
 
-int genericEx() {
-    return 0;
-}
-
 class Player {
     public:
         std::string name;
