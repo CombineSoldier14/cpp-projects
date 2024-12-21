@@ -1,3 +1,4 @@
+#include <csignal>
 #include <functional>
 #include <iostream>
 #include <string>
@@ -22,10 +23,16 @@ int rangeRng(int lowest, int highest) {
     return rng;
 }
 
+int genericEx() {
+    return 0;
+}
+
 class Player {
     public:
         std::string name;
         int health = 100;
+        int max_health;
+        int healingPotions;
         int attack(Player& opposingPlayer, int lowest, int highest, int testlowest, int testhighest, int hitSpecifier) {
             int testRng = rangeRng(testlowest, testhighest);
             if (testRng == hitSpecifier) {
@@ -39,10 +46,33 @@ class Player {
             }
         }
 
+        int heal() {
+            if (this->health >= 100) {
+                return 2;
+            }
+            if (this->healingPotions <= 0) {
+                return 3;
+            }
+            this->healingPotions -= 1;
+            int healedHealth = rangeRng(3, 20);
+            this->health += healedHealth;
+            if (this->health > this->max_health) {
+                int total = 0;
+                while (this->health > this->max_health) {
+                    total++;
+                    this->health--;
+                }
+                healedHealth -= total;
+            }
+            std::cout << this->name << " healed " << healedHealth << " health!\n";
+            return 0;
+        }
+
         std::map<std::string, std::function<int()>> getList(Player& opposingPlayer) {
             std::map<std::string, std::function<int()>> attacks;
-            attacks["Small Attack"] = [&]() { return attack(opposingPlayer, 0, 15, 0, 1, 1); };
+            attacks["Small Attack"] = [&]() { return attack(opposingPlayer, 1, 15, 0, 1, 1); };
             attacks["Large Attack"] = [&]() { return attack(opposingPlayer, 15, 30, 1, 3, 3); };
+            attacks["Healing Potion"] = [&]() { return heal(); };
             return attacks;
         }
 };
@@ -53,7 +83,7 @@ void finish(Player& winningPlayer, Player& losingPlayer) {
 
 void turn(Player& player1, Player& player2) {
     std::cout << "-------------------------------------------------------\n";
-    std::cout << "Current Turn: " << player1.name << "\n" << player1.name << " health: " << player1.health << "\n" << player2.name << " health: " << player2.health << "\n";
+    std::cout << "Current Turn: " << player1.name << "\n" << player1.name << "'s health: " << player1.health << "\n" << player2.name << "'s health: " << player2.health << "\n";
     std::map<std::string, std::function<int()>> attacks = player1.getList(player2);
     std::cout << "\nAttacks:\n";
     int index = 0;
@@ -61,20 +91,29 @@ void turn(Player& player1, Player& player2) {
         std::cout << index + 1 << ". " << i.first << "\n"; 
         index++;
     }
-    std::cout << "-------------------------------------------------------\n";
+    std::cout << "\nHealing Potions left: " << player1.healingPotions;
+    std::cout << "\n-------------------------------------------------------\n";
     std::cout << "Type the name of your attack.\n";
     std::string x;
-    int flag = 0;
     std::cout << "> ";
-    while (!flag) {
+    while (true) {
         std::getline(std::cin, x);
         try {
-            attacks[x]();
-            break;
+            int attak = attacks[x]();
+            if (attak == 2) {
+                std::cout << "You health is already at max!\n";
+                std::cout << "> ";
+            } else if (attak == 3) {
+                std::cout << "You don't have any healing potions!\n";
+                std::cout << "> ";
+            } else {
+                break;
+            }
         }
         catch(std::bad_function_call) {
             std::cout << "Attack \"" << x <<"\" not found!\n";
-        } 
+            std::cout << "> ";
+        }
     }
 }
 
@@ -103,10 +142,14 @@ void start(Player& player1, Player& player2) {
 int main() {
     Player john;
     john.name = data["PLAYER1"]["NAME"];
-    john.health = data["PLAYER2"]["STARTING_HEALTH"];
+    john.health = data["PLAYER1"]["STARTING_HEALTH"];
+    john.max_health = data["PLAYER1"]["STARTING_HEALTH"];
+    john.healingPotions = data["PLAYER1"]["ATTACKS"]["HEALING_POTIONS"];
     Player tim;
     tim.name = data["PLAYER2"]["NAME"];
     tim.health = data["PLAYER2"]["STARTING_HEALTH"];
+    tim.max_health = data["PLAYER2"]["STARTING_HEALTH"];
+    tim.healingPotions = data["PLAYER2"]["ATTACKS"]["HEALING_POTIONS"];
     start(john, tim);
     return 0;
 }

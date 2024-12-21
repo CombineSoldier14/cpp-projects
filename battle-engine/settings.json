@@ -1,10 +1,16 @@
 {
     "PLAYER1":{
         "NAME":"John",
-        "STARTING_HEALTH":100
+        "STARTING_HEALTH":100,
+        "ATTACKS":{
+            "HEALING_POTIONS":3
+        }
     },
     "PLAYER2":{
         "NAME":"Tim",
-        "STARTING_HEALTH":100
+        "STARTING_HEALTH":100,
+        "ATTACKS":{
+            "HEALING_POTIONS":3
+        }
     }
 }
