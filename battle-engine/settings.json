@@ -1,16 +1,24 @@
 {
     "PLAYER1":{
         "NAME":"John",
-        "STARTING_HEALTH":100,
+        "STARTING_HEALTH":200,
         "ATTACKS":{
-            "HEALING_POTIONS":3
+            "HEALING_POTIONS":5,
+            "MINIONS":{
+                "TURNS":5,
+                "AMOUNT":2
+            }
         }
     },
     "PLAYER2":{
         "NAME":"Tim",
-        "STARTING_HEALTH":100,
+        "STARTING_HEALTH":200,
         "ATTACKS":{
-            "HEALING_POTIONS":3
+            "HEALING_POTIONS":5,
+            "MINIONS":{
+                "TURNS":5,
+                "AMOUNT":2
+            }
         }
     }
 }

@@ -9,7 +9,7 @@
 
 using json = nlohmann::json;
 
-std::string version = "1.2.0";
+std::string version = "1.3.1";
 
 std::ifstream f("settings.json");
 json data = json::parse(f);
@@ -29,12 +29,33 @@ class Player {
         int health = 100;
         int max_health;
         int healingPotions;
+        bool minionActive;
+        int minions;
+        int minionTurns;
+        int minionMaxTurns;
         int attack(Player& opposingPlayer, int lowest, int highest, int testlowest, int testhighest, int hitSpecifier) {
+            int minionDamage = 0;
+            if (minionActive) {
+                    if ((this->minionTurns = 1)) {
+                        std::cout << "Minion will be deactivated after this turn.";
+                    } 
+                    minionTurns -= 1;
+                    minionDamage = rangeRng(lowest, highest);
+                    testhighest += 1;
+                    if(minionTurns <= 0) {
+                        this->minionActive = false;
+                    }
+                }
             int testRng = rangeRng(testlowest, testhighest);
             if (testRng == hitSpecifier) {
                 int hitRng = rangeRng(lowest, highest);
-                opposingPlayer.health -= hitRng;
-                std::cout << "\nThat's a hit! " << hitRng << " damage.\n\n";
+                opposingPlayer.health -= hitRng + minionDamage;
+                std::cout << "\nThat's a hit! " << hitRng << " damage.\n";
+                if (minionActive) {
+                    std::cout << "Active minion added " << minionDamage << " damage.";
+                    minionTurns -= 1;
+                }
+                std::cout << "\n";
                 return 0;
             } else {
                 std::cout << "\nThat's a miss!\n\n";
@@ -69,6 +90,19 @@ class Player {
             attacks["Small Attack"] = [&]() { return attack(opposingPlayer, 1, 15, 0, 1, 1); };
             attacks["Large Attack"] = [&]() { return attack(opposingPlayer, 15, 30, 1, 3, 3); };
             attacks["Healing Potion"] = [&]() { return heal(); };
+            attacks["Summon Minion"] = [&]() {
+                if(this->minions <= 0) {
+                    return 4;
+                }
+                if(this->minionActive) {
+                    return 5;
+                }
+                this->minions -= 1;
+                this->minionActive = true;
+                this->minionTurns = 5;
+                std::cout << "Minion summoned and active!\n";
+                return 0;
+            };
             return attacks;
         }
 };
@@ -87,7 +121,14 @@ void turn(Player& player1, Player& player2) {
         std::cout << index + 1 << ". " << i.first << "\n"; 
         index++;
     }
-    std::cout << "\nHealing Potions left: " << player1.healingPotions;
+    std::cout << "\nHealing Potions left: " << player1.healingPotions << "\n";
+    std::cout << "Available Minions: " << player1.minions << "\n" << "Minions add a random damage boost (potentially double) but lower your chances of hitting. They last for " << player1.minionMaxTurns << " of your turns.\n";
+    std::cout << "Minion Active?: ";
+    if (player1.minionActive) {
+        std::cout << "Yes";
+    } else {
+        std::cout << "No";
+    }
     std::cout << "\n-------------------------------------------------------\n";
     std::cout << "Type the name of your attack.\n";
     std::string x;
@@ -97,14 +138,19 @@ void turn(Player& player1, Player& player2) {
         try {
             int attak = attacks[x]();
             if (attak == 2) {
-                std::cout << "You health is already at max!\n";
+                std::cout << "Your health is already at max!\n";
                 std::cout << "> ";
             } else if (attak == 3) {
                 std::cout << "You don't have any healing potions!\n";
                 std::cout << "> ";
-            } else {
-                break;
+            } else if (attak == 4) {
+                std::cout << "You don't have any minions left!";
+                std::cout << "> ";
+            } else if (attak == 5) {
+                std::cout << "You already have a minion active!";
+                std::cout << "> ";
             }
+            break;
         }
         catch(std::bad_function_call) {
             std::cout << "Attack \"" << x <<"\" not found!\n";
@@ -141,11 +187,19 @@ int main() {
     john.health = data["PLAYER1"]["STARTING_HEALTH"];
     john.max_health = data["PLAYER1"]["STARTING_HEALTH"];
     john.healingPotions = data["PLAYER1"]["ATTACKS"]["HEALING_POTIONS"];
+    john.minions = data["PLAYER1"]["ATTACKS"]["MINIONS"]["AMOUNT"];
+    john.minionActive = false;
+    john.minionTurns =  data["PLAYER1"]["ATTACKS"]["MINIONS"]["TURNS"];
+    john.minionMaxTurns = data["PLAYER1"]["ATTACKS"]["MINIONS"]["TURNS"];
     Player tim;
     tim.name = data["PLAYER2"]["NAME"];
     tim.health = data["PLAYER2"]["STARTING_HEALTH"];
     tim.max_health = data["PLAYER2"]["STARTING_HEALTH"];
     tim.healingPotions = data["PLAYER2"]["ATTACKS"]["HEALING_POTIONS"];
+    tim.minions = data["PLAYER2"]["ATTACKS"]["MINIONS"]["AMOUNT"];
+    tim.minionActive = false;
+    tim.minionTurns = data["PLAYER2"]["ATTACKS"]["MINIONS"]["TURNS"];
+    tim.minionMaxTurns = data["PLAYER2"]["ATTACKS"]["MINIONS"]["TURNS"];
     start(john, tim);
     return 0;
 }
