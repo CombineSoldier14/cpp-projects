@@ -99,7 +99,7 @@ class Player {
                 }
                 this->minions--;
                 this->minionActive = true;
-                this->minionTurns = 5;
+                this->minionTurns = data["PLAYER1"]["ATTACKS"]["MINIONS"]["TURNS"];
                 std::cout << "Minion summoned and active!\n";
                 return 0;
             };
