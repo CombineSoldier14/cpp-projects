@@ -36,13 +36,13 @@ class Player {
         int attack(Player& opposingPlayer, int lowest, int highest, int testlowest, int testhighest, int hitSpecifier) {
             int minionDamage = 0;
             if (minionActive) {
-                    if ((this->minionTurns = 1)) {
+                    if (this->minionTurns == 1) {
                         std::cout << "Minion will be deactivated after this turn.";
                     } 
-                    minionTurns -= 1;
+                    minionTurns--;
                     minionDamage = rangeRng(lowest, highest);
                     testhighest += 1;
-                    if(minionTurns <= 0) {
+                    if (minionTurns <= 0) {
                         this->minionActive = false;
                     }
                 }
@@ -51,9 +51,9 @@ class Player {
                 int hitRng = rangeRng(lowest, highest);
                 opposingPlayer.health -= hitRng + minionDamage;
                 std::cout << "\nThat's a hit! " << hitRng << " damage.\n";
-                if (minionActive) {
+                if (this->minionActive) {
                     std::cout << "Active minion added " << minionDamage << " damage.";
-                    minionTurns -= 1;
+                    minionTurns--;
                 }
                 std::cout << "\n";
                 return 0;
@@ -97,7 +97,7 @@ class Player {
                 if(this->minionActive) {
                     return 5;
                 }
-                this->minions -= 1;
+                this->minions--;
                 this->minionActive = true;
                 this->minionTurns = 5;
                 std::cout << "Minion summoned and active!\n";
