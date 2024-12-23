@@ -9,10 +9,21 @@
 
 using json = nlohmann::json;
 
-std::string version = "1.3.2";
+std::string version = "1.3.3";
 
 std::ifstream f("settings.json");
 json data = json::parse(f);
+
+
+std::string getDivider() {
+    std::string divider = "";
+    int loopnum = 0;
+    while (loopnum <= 56) {
+        divider.append(data["DIVIDER"]);
+        loopnum++;
+    }
+    return divider;
+}
 
 // the rng ranges might be off. not sure. have to test later.
 int rangeRng(int lowest, int highest) {
@@ -29,15 +40,17 @@ class Player {
         int health = 100;
         int max_health;
         int healingPotions;
+        std::string HealingPotionsName;
         bool minionActive;
         int minions;
         int minionTurns;
         int minionMaxTurns;
+        std::string minionName;
         int attack(Player& opposingPlayer, int lowest, int highest, int testlowest, int testhighest, int hitSpecifier) {
             int minionDamage = 0;
             if (minionActive) {
                     if (this->minionTurns == 1) {
-                        std::cout << "Minion will be deactivated after this turn.";
+                        std::cout << this->minionName << " will be deactivated after this turn.";
                     } 
                     minionTurns--;
                     minionDamage = rangeRng(lowest, highest);
@@ -52,7 +65,7 @@ class Player {
                 opposingPlayer.health -= hitRng + minionDamage;
                 std::cout << "\nThat's a hit! " << hitRng << " damage.\n";
                 if (minionActive) {
-                    std::cout << "Active minion added " << minionDamage << " damage.";
+                    std::cout << "Active " << this->minionName <<  " added " << minionDamage << " damage.";
                     minionTurns--;
                 }
                 std::cout << "\n";
@@ -89,8 +102,8 @@ class Player {
             std::map<std::string, std::function<int()>> attacks;
             attacks["Small Attack"] = [&]() { return attack(opposingPlayer, 1, 15, 0, 1, 1); };
             attacks["Large Attack"] = [&]() { return attack(opposingPlayer, 15, 30, 1, 3, 3); };
-            attacks["Healing Potion"] = [&]() { return heal(); };
-            attacks["Summon Minion"] = [&]() {
+            attacks[this->HealingPotionsName] = [&]() { return heal(); };
+            attacks["Summon " + this->minionName] = [&]() {
                 if(this->minions <= 0) {
                     return 4;
                 }
@@ -100,7 +113,7 @@ class Player {
                 this->minions--;
                 this->minionActive = true;
                 this->minionTurns = data["PLAYER1"]["ATTACKS"]["MINIONS"]["TURNS"];
-                std::cout << "Minion summoned and active!\n";
+                std::cout << this->minionName << " summoned and active!\n";
                 return 0;
             };
             return attacks;
@@ -111,8 +124,10 @@ void finish(Player& winningPlayer, Player& losingPlayer) {
     std::cout << "\n " << winningPlayer.name << " has won the battle with " << winningPlayer.health<< " health!\n";
 }
 
+// 56
+
 void turn(Player& player1, Player& player2) {
-    std::cout << "-------------------------------------------------------\n";
+    std::cout << getDivider() << "\n";
     std::cout << "Current Turn: " << player1.name << "\n" << player1.name << "'s health: " << player1.health << "\n" << player2.name << "'s health: " << player2.health << "\n";
     std::map<std::string, std::function<int()>> attacks = player1.getList(player2);
     std::cout << "\nAttacks:\n";
@@ -122,14 +137,14 @@ void turn(Player& player1, Player& player2) {
         index++;
     }
     std::cout << "\nHealing Potions left: " << player1.healingPotions << "\n";
-    std::cout << "Available Minions: " << player1.minions << "\n" << "Minions add a random damage boost (potentially double) but lower your chances of hitting. They last for " << player1.minionMaxTurns << " of your turns.\n";
+    std::cout << "Available " << player1.minionName << "s: " << player1.minions << "\n" << player1.minionName << "s add a random damage boost (potentially double) but lower your chances of hitting. They last for " << player1.minionMaxTurns << " of your turns.\n";
     std::cout << "Minion Active?: ";
     if (player1.minionActive) {
         std::cout << "Yes";
     } else {
         std::cout << "No";
     }
-    std::cout << "\n-------------------------------------------------------\n";
+    std::cout << "\n" << getDivider() << "\n";
     std::cout << "Type the name of your attack.\n";
     std::string x;
     std::cout << "> ";
@@ -141,13 +156,13 @@ void turn(Player& player1, Player& player2) {
                 std::cout << "Your health is already at max!\n";
                 std::cout << "> ";
             } else if (attak == 3) {
-                std::cout << "You don't have any healing potions!\n";
+                std::cout << "You don't have any " << player1.minionName << "s!\n";
                 std::cout << "> ";
             } else if (attak == 4) {
-                std::cout << "You don't have any minions left!";
+                std::cout << "You don't have any " << player1.minionName << "s left!";
                 std::cout << "> ";
             } else if (attak == 5) {
-                std::cout << "You already have a minion active!";
+                std::cout << "You already have a " << player1.minionName << " active!";
                 std::cout << "> ";
             }
             break;
@@ -161,7 +176,7 @@ void turn(Player& player1, Player& player2) {
 
 void start(Player& player1, Player& player2) {
     std::cout << "Made with BattleEngine v" << version << " by CombineSoldier14\n";
-    std::cout << "-------------------------------------------------------\n";
+    std::cout << getDivider() << "\n";
     std::cout << "The battle has begun!\n" << player1.name << " vs " << player2.name << "\n\n";
     while (player1.health > 0 && player2.health > 0) {  // Fix the condition to end when both players' health are 0 or less
         turn(player1, player2);
@@ -186,20 +201,24 @@ int main() {
     john.name = data["PLAYER1"]["NAME"];
     john.health = data["PLAYER1"]["STARTING_HEALTH"];
     john.max_health = data["PLAYER1"]["STARTING_HEALTH"];
-    john.healingPotions = data["PLAYER1"]["ATTACKS"]["HEALING_POTIONS"];
+    john.healingPotions = data["PLAYER1"]["ATTACKS"]["HEALING_POTIONS"]["AMOUNT"];
+    john.HealingPotionsName = data["PLAYER1"]["ATTACKS"]["HEALING_POTIONS"]["NAME"];
     john.minions = data["PLAYER1"]["ATTACKS"]["MINIONS"]["AMOUNT"];
     john.minionActive = false;
     john.minionTurns =  data["PLAYER1"]["ATTACKS"]["MINIONS"]["TURNS"];
     john.minionMaxTurns = data["PLAYER1"]["ATTACKS"]["MINIONS"]["TURNS"];
+    john.minionName = data["PLAYER1"]["ATTACKS"]["MINIONS"]["NAME"];
     Player tim;
     tim.name = data["PLAYER2"]["NAME"];
     tim.health = data["PLAYER2"]["STARTING_HEALTH"];
     tim.max_health = data["PLAYER2"]["STARTING_HEALTH"];
-    tim.healingPotions = data["PLAYER2"]["ATTACKS"]["HEALING_POTIONS"];
+    tim.healingPotions = data["PLAYER2"]["ATTACKS"]["HEALING_POTIONS"]["AMOUNT"];
+    tim.HealingPotionsName = data["PLAYER2"]["ATTACKS"]["HEALING_POTIONS"]["NAME"];
     tim.minions = data["PLAYER2"]["ATTACKS"]["MINIONS"]["AMOUNT"];
     tim.minionActive = false;
     tim.minionTurns = data["PLAYER2"]["ATTACKS"]["MINIONS"]["TURNS"];
     tim.minionMaxTurns = data["PLAYER2"]["ATTACKS"]["MINIONS"]["TURNS"];
+    tim.minionName = data["PLAYER2"]["ATTACKS"]["MINIONS"]["NAME"];
     start(john, tim);
     return 0;
 }

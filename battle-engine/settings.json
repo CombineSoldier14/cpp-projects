@@ -1,23 +1,32 @@
 {
+    "DIVIDER":"=",
     "PLAYER1":{
-        "NAME":"Phoenix Wright",
-        "STARTING_HEALTH":200,
+        "NAME":"John",
+        "STARTING_HEALTH":100,
         "ATTACKS":{
-            "HEALING_POTIONS":3,
+            "HEALING_POTIONS":{
+                "AMOUNT":3,
+                "NAME":"Healing Potion"
+            },
             "MINIONS":{
                 "TURNS":5,
-                "AMOUNT":4
+                "AMOUNT":4,
+                "NAME":"Minion"
             }
         }
     },
     "PLAYER2":{
-        "NAME":"Miles Edgeworth",
-        "STARTING_HEALTH":200,
+        "NAME":"Tim",
+        "STARTING_HEALTH":100,
         "ATTACKS":{
-            "HEALING_POTIONS":3,
+            "HEALING_POTIONS":{
+                "AMOUNT":3,
+                "NAME":"Healing Potion"
+            },
             "MINIONS":{
                 "TURNS":5,
-                "AMOUNT":4
+                "AMOUNT":4,
+                "NAME":"Minion"
             }
         }
     }
