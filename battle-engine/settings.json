@@ -1,23 +1,23 @@
 {
     "PLAYER1":{
-        "NAME":"John",
+        "NAME":"Phoenix Wright",
         "STARTING_HEALTH":200,
         "ATTACKS":{
-            "HEALING_POTIONS":5,
+            "HEALING_POTIONS":3,
             "MINIONS":{
                 "TURNS":5,
-                "AMOUNT":2
+                "AMOUNT":4
             }
         }
     },
     "PLAYER2":{
-        "NAME":"Tim",
+        "NAME":"Miles Edgeworth",
         "STARTING_HEALTH":200,
         "ATTACKS":{
-            "HEALING_POTIONS":5,
+            "HEALING_POTIONS":3,
             "MINIONS":{
                 "TURNS":5,
-                "AMOUNT":2
+                "AMOUNT":4
             }
         }
     }

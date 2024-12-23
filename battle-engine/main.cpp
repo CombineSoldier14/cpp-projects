@@ -51,7 +51,7 @@ class Player {
                 int hitRng = rangeRng(lowest, highest);
                 opposingPlayer.health -= hitRng + minionDamage;
                 std::cout << "\nThat's a hit! " << hitRng << " damage.\n";
-                if (this->minionActive) {
+                if (minionActive) {
                     std::cout << "Active minion added " << minionDamage << " damage.";
                     minionTurns--;
                 }
