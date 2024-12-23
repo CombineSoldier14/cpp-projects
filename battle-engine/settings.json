@@ -1,6 +1,6 @@
 {
     "PLAYER1":{
-        "NAME":"Ass",
+        "NAME":"John",
         "STARTING_HEALTH":200,
         "ATTACKS":{
             "HEALING_POTIONS":5,
@@ -11,7 +11,7 @@
         }
     },
     "PLAYER2":{
-        "NAME":"Titties",
+        "NAME":"Tim",
         "STARTING_HEALTH":200,
         "ATTACKS":{
             "HEALING_POTIONS":5,
