@@ -5,6 +5,8 @@ Includes:
 - **BattleEngine**: A heavily customizable turn-based battle game.
 
 # Build from Source
+*NOTE: These instructions have not been tested on Windows or OSX. If you run into any issues with this, [open a new issue](https://github.com/CombineSoldier14/cpp-projects/issues/new).*
+
 **BattleEngine**
   * You will need a C++ compiler. I recommend G++, but any should work fine.
   * You will need [vcpkg](https://vcpkg.io) and install that on your system. You can find instructions on their page linked.
