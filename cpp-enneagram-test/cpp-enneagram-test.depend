@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1735104498 source:/home/combinesoldier14/Documents/projects/cpp-projects/cpp-enneagram-test/main.cpp
+	<iostream>
+	<map>
+	<string>
+	<algorithm>
+
