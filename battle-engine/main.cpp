@@ -35,89 +35,89 @@ int rangeRng(int lowest, int highest) {
 }
 
 class Player {
-    public:
-        std::string name;
-        int health = 100;
-        int max_health;
-        int healingPotions;
-        std::string HealingPotionsName;
-        bool minionActive;
-        int minions;
-        int minionTurns;
-        int minionMaxTurns;
-        std::string minionName;
-        int attack(Player& opposingPlayer, int lowest, int highest, int testlowest, int testhighest, int hitSpecifier) {
-            int minionDamage = 0;
+public:
+    std::string name;
+    int health = 100;
+    int max_health;
+    int healingPotions;
+    std::string HealingPotionsName;
+    bool minionActive;
+    int minions;
+    int minionTurns;
+    int minionMaxTurns;
+    std::string minionName;
+    int attack(Player& opposingPlayer, int lowest, int highest, int testlowest, int testhighest, int hitSpecifier) {
+        int minionDamage = 0;
+        if (minionActive) {
+            if (this->minionTurns == 1) {
+                std::cout << this->minionName << " will be deactivated after this turn.";
+            }
+            minionTurns--;
+            minionDamage = rangeRng(lowest, highest);
+            testhighest += 1;
+            if (minionTurns <= 0) {
+                this->minionActive = false;
+            }
+        }
+        int testRng = rangeRng(testlowest, testhighest);
+        if (testRng == hitSpecifier) {
+            int hitRng = rangeRng(lowest, highest);
+            opposingPlayer.health -= hitRng + minionDamage;
+            std::cout << "\nThat's a hit! " << hitRng << " damage.\n";
             if (minionActive) {
-                    if (this->minionTurns == 1) {
-                        std::cout << this->minionName << " will be deactivated after this turn.";
-                    } 
-                    minionTurns--;
-                    minionDamage = rangeRng(lowest, highest);
-                    testhighest += 1;
-                    if (minionTurns <= 0) {
-                        this->minionActive = false;
-                    }
-                }
-            int testRng = rangeRng(testlowest, testhighest);
-            if (testRng == hitSpecifier) {
-                int hitRng = rangeRng(lowest, highest);
-                opposingPlayer.health -= hitRng + minionDamage;
-                std::cout << "\nThat's a hit! " << hitRng << " damage.\n";
-                if (minionActive) {
-                    std::cout << "Active " << this->minionName <<  " added " << minionDamage << " damage.";
-                    minionTurns--;
-                }
-                std::cout << "\n";
-                return 0;
-            } else {
-                std::cout << "\nThat's a miss!\n\n";
-                return 1;
+                std::cout << "Active " << this->minionName <<  " added " << minionDamage << " damage.";
+                minionTurns--;
             }
-        }
-
-        int heal() {
-            if (this->health >= 100) {
-                return 2;
-            }
-            if (this->healingPotions <= 0) {
-                return 3;
-            }
-            this->healingPotions -= 1;
-            int healedHealth = rangeRng(3, 20);
-            this->health += healedHealth;
-            if (this->health > this->max_health) {
-                int total = 0;
-                while (this->health > this->max_health) {
-                    total++;
-                    this->health--;
-                }
-                healedHealth -= total;
-            }
-            std::cout << this->name << " healed " << healedHealth << " health!\n";
+            std::cout << "\n";
             return 0;
+        } else {
+            std::cout << "\nThat's a miss!\n\n";
+            return 1;
         }
+    }
 
-        std::map<std::string, std::function<int()>> getList(Player& opposingPlayer) {
-            std::map<std::string, std::function<int()>> attacks;
-            attacks["Small Attack"] = [&]() { return attack(opposingPlayer, 1, 15, 0, 1, 1); };
-            attacks["Large Attack"] = [&]() { return attack(opposingPlayer, 15, 30, 1, 3, 3); };
-            attacks[this->HealingPotionsName] = [&]() { return heal(); };
-            attacks["Summon " + this->minionName] = [&]() {
-                if(this->minions <= 0) {
-                    return 4;
-                }
-                if(this->minionActive) {
-                    return 5;
-                }
-                this->minions--;
-                this->minionActive = true;
-                this->minionTurns = data["PLAYER1"]["ATTACKS"]["MINIONS"]["TURNS"];
-                std::cout << this->minionName << " summoned and active!\n";
-                return 0;
-            };
-            return attacks;
+    int heal() {
+        if (this->health >= 100) {
+            return 2;
         }
+        if (this->healingPotions <= 0) {
+            return 3;
+        }
+        this->healingPotions -= 1;
+        int healedHealth = rangeRng(3, 20);
+        this->health += healedHealth;
+        if (this->health > this->max_health) {
+            int total = 0;
+            while (this->health > this->max_health) {
+                total++;
+                this->health--;
+            }
+            healedHealth -= total;
+        }
+        std::cout << this->name << " healed " << healedHealth << " health!\n";
+        return 0;
+    }
+
+    std::map<std::string, std::function<int()>> getList(Player& opposingPlayer) {
+        std::map<std::string, std::function<int()>> attacks;
+        attacks["Small Attack"] = [&]() { return attack(opposingPlayer, 1, 15, 0, 1, 1); };
+        attacks["Large Attack"] = [&]() { return attack(opposingPlayer, 15, 30, 1, 3, 3); };
+        attacks[this->HealingPotionsName] = [&]() { return heal(); };
+        attacks["Summon " + this->minionName] = [&]() {
+            if(this->minions <= 0) {
+                return 4;
+            }
+            if(this->minionActive) {
+                return 5;
+            }
+            this->minions--;
+            this->minionActive = true;
+            this->minionTurns = data["PLAYER1"]["ATTACKS"]["MINIONS"]["TURNS"];
+            std::cout << this->minionName << " summoned and active!\n";
+            return 0;
+        };
+        return attacks;
+    }
 };
 
 void finish(Player& winningPlayer, Player& losingPlayer) {
@@ -133,12 +133,12 @@ void turn(Player& player1, Player& player2) {
     std::cout << "\nAttacks:\n";
     int index = 0;
     for(auto i: attacks) {
-        std::cout << index + 1 << ". " << i.first << "\n"; 
+        std::cout << index + 1 << ". " << i.first << "\n";
         index++;
     }
     std::cout << "\nHealing Potions left: " << player1.healingPotions << "\n";
     std::cout << "Available " << player1.minionName << "s: " << player1.minions << "\n" << player1.minionName << "s add a random damage boost (potentially double) but lower your chances of hitting. They last for " << player1.minionMaxTurns << " of your turns.\n";
-    std::cout << "Minion Active?: ";
+    std::cout << player1.minionName << " Active?: ";
     if (player1.minionActive) {
         std::cout << "Yes";
     } else {
