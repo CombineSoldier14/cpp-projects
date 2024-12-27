@@ -46,7 +46,7 @@ public:
     int minionTurns;
     int minionMaxTurns;
     std::string minionName;
-    int attack(Player& opposingPlayer, int lowest, int highest, int testlowest, int testhighest, int hitSpecifier) {
+    int attack(Player& opposingPlayer, int lowest, int highest, int testlowest, int testhighest, int hitPercent) {
         int minionDamage = 0;
         if (minionActive) {
             if (this->minionTurns == 1) {
@@ -57,7 +57,7 @@ public:
             testhighest += 1;
         }
         int testRng = rangeRng(testlowest, testhighest);
-        if (testRng == hitSpecifier) {
+        if (testRng > hitPercent) {
             int hitRng = rangeRng(lowest, highest);
             opposingPlayer.health -= hitRng + minionDamage;
             std::cout << "\nThat's a hit! " << hitRng << " damage.\n";
@@ -83,7 +83,7 @@ public:
             return 3;
         }
         this->healingPotions -= 1;
-        int healedHealth = rangeRng(3, 20);
+        int healedHealth = rangeRng(7, 20);
         this->health += healedHealth;
         if (this->health > this->max_health) {
             int total = 0;
@@ -99,8 +99,8 @@ public:
 
     std::map<std::string, std::function<int()>> getList(Player& opposingPlayer) {
         std::map<std::string, std::function<int()>> attacks;
-        attacks["Small Attack"] = [&]() { return attack(opposingPlayer, 1, 15, 0, 1, 1); };
-        attacks["Large Attack"] = [&]() { return attack(opposingPlayer, 15, 30, 1, 3, 3); };
+        attacks["Small Attack"] = [&]() { return attack(opposingPlayer, 1, 15, 1, 100, 25); };
+        attacks["Large Attack"] = [&]() { return attack(opposingPlayer, 15, 30, 1, 100, 50); };
         attacks[this->HealingPotionsName] = [&]() { return heal(); };
         attacks["Summon " + this->minionName] = [&]() {
             if(this->minions <= 0) {
