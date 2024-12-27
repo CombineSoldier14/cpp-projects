@@ -158,10 +158,10 @@ void turn(Player& player1, Player& player2) {
                 std::cout << "You don't have any " << player1.HealingPotionsName << "s!\n";
                 std::cout << "> ";
             } else if (attak == 4) {
-                std::cout << "You don't have any " << player1.minionName << "s left!";
+                std::cout << "You don't have any " << player1.minionName << "s left!\n";
                 std::cout << "> ";
             } else if (attak == 5) {
-                std::cout << "You already have a " << player1.minionName << " active!";
+                std::cout << "You already have a " << player1.minionName << " active!\n";
                 std::cout << "> ";
             } else {
                 break;
