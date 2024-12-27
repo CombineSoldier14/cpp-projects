@@ -52,7 +52,7 @@ public:
             if (this->minionTurns == 1) {
                 std::cout << this->minionName << " will be deactivated after this turn.";
             }
-            minionTurns--;
+            this->minionTurns--;
             minionDamage = rangeRng(lowest, highest);
             testhighest += 1;
         }
