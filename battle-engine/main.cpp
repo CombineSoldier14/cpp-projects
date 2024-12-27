@@ -77,7 +77,7 @@ public:
     }
 
     int heal() {
-        if (this->health >= 100) {
+        if (this->health >= this->max_health) {
             return 2;
         }
         if (this->healingPotions <= 0) {
