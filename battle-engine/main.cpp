@@ -54,7 +54,7 @@ public:
             }
             this->minionTurns--;
             minionDamage = rangeRng(lowest, highest);
-            testhighest += 1;
+            testHighest += 25;
         }
         int testRng = rangeRng(testlowest, testhighest);
         if (testRng > missPercent) {
