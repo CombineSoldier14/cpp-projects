@@ -9,7 +9,7 @@
 
 using json = nlohmann::json;
 
-std::string version = "1.3.3";
+std::string version = "1.3.4";
 
 std::ifstream f("settings.json");
 json data = json::parse(f);
@@ -127,7 +127,7 @@ void finish(Player& winningPlayer, Player& losingPlayer) {
 // 56
 
 void turn(Player& player1, Player& player2) {
-    std::cout << getDivider() << "\n";
+    std::cout << "\n" << getDivider() << "\n";
     std::cout << "Current Turn: " << player1.name << "\n" << player1.name << "'s health: " << player1.health << "\n" << player2.name << "'s health: " << player2.health << "\n";
     std::map<std::string, std::function<int()>> attacks = player1.getList(player2);
     std::cout << "\nAttacks:\n";
@@ -164,8 +164,9 @@ void turn(Player& player1, Player& player2) {
             } else if (attak == 5) {
                 std::cout << "You already have a " << player1.minionName << " active!";
                 std::cout << "> ";
+            } else {
+                break;
             }
-            break;
         }
         catch(std::bad_function_call) {
             std::cout << "Attack \"" << x <<"\" not found!\n";
