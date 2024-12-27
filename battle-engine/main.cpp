@@ -55,9 +55,6 @@ public:
             minionTurns--;
             minionDamage = rangeRng(lowest, highest);
             testhighest += 1;
-            if (minionTurns <= 0) {
-                this->minionActive = false;
-            }
         }
         int testRng = rangeRng(testlowest, testhighest);
         if (testRng == hitSpecifier) {
@@ -66,7 +63,9 @@ public:
             std::cout << "\nThat's a hit! " << hitRng << " damage.\n";
             if (minionActive) {
                 std::cout << "Active " << this->minionName <<  " added " << minionDamage << " damage.";
-                minionTurns--;
+                if (minionTurns <= 0) {
+                    this->minionActive = false;
+                }
             }
             std::cout << "\n";
             return 0;
