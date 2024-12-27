@@ -155,7 +155,7 @@ void turn(Player& player1, Player& player2) {
                 std::cout << "Your health is already at max!\n";
                 std::cout << "> ";
             } else if (attak == 3) {
-                std::cout << "You don't have any " << player1.minionName << "s!\n";
+                std::cout << "You don't have any " << player1.HealingPotionsName << "s!\n";
                 std::cout << "> ";
             } else if (attak == 4) {
                 std::cout << "You don't have any " << player1.minionName << "s left!";
