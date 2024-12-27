@@ -46,7 +46,7 @@ public:
     int minionTurns;
     int minionMaxTurns;
     std::string minionName;
-    int attack(Player& opposingPlayer, int lowest, int highest, int testlowest, int testhighest, int hitPercent) {
+    int attack(Player& opposingPlayer, int lowest, int highest, int testlowest, int testhighest, int missPercent) {
         int minionDamage = 0;
         if (minionActive) {
             if (this->minionTurns == 1) {
@@ -57,7 +57,7 @@ public:
             testhighest += 1;
         }
         int testRng = rangeRng(testlowest, testhighest);
-        if (testRng > hitPercent) {
+        if (testRng > missPercent) {
             int hitRng = rangeRng(lowest, highest);
             opposingPlayer.health -= hitRng + minionDamage;
             std::cout << "\nThat's a hit! " << hitRng << " damage.\n";
