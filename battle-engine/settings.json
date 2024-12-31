@@ -12,6 +12,12 @@
                 "TURNS":5,
                 "AMOUNT":4,
                 "NAME":"Minion"
+            },
+            "SHIELDS":{
+                "TURNS":5,
+                "AMOUNT":2,
+                "NAME":"Shield",
+                "DIVIDE_DAMAGE":2
             }
         }
     },
@@ -27,6 +33,12 @@
                 "TURNS":5,
                 "AMOUNT":4,
                 "NAME":"Minion"
+            },
+            "SHIELDS":{
+                "TURNS":5,
+                "AMOUNT":2,
+                "NAME":"Shield",
+                "DIVIDE_DAMAGE":2
             }
         }
     }
