@@ -84,13 +84,13 @@ public:
                 if (minionTurns <= 0) {
                     this->minionActive = false;
                 }
+<<<<<<< HEAD
             }
             if (opposingPlayer.shieldActive) {
                 std::cout << opposingPlayer.name << "'s " << opposingPlayer.shieldName << " blocked " << damage - finalDamage << " damage.";
+>>>>>>> d3dbea978dc062b665e258328081034c8b8103f4
             }
             std::cout << "\n";
-            return 0;
-        } else {
             std::cout << "\nThat's a miss!\n\n";
             return 1;
         }
@@ -204,12 +204,15 @@ void turn(Player& player1, Player& player2) {
                 std::cout << "> ";
             } else if (attak == 5) {
                 std::cout << "You already have a " << player1.minionName << " active!\n";
+<<<<<<< HEAD
                 std::cout << "> ";
             } else if (attak == 6){
                 std::cout << "You don't have any " << player1.shieldName << "s left!\n";
                 std::cout << "> ";
             } else if (attak == 7){
                 std::cout << "You already have a " << player1.shieldName << " active!";
+=======
+>>>>>>> d3dbea978dc062b665e258328081034c8b8103f4
                 std::cout << "> ";
             } else {
                 break;
