@@ -84,11 +84,9 @@ public:
                 if (minionTurns <= 0) {
                     this->minionActive = false;
                 }
-<<<<<<< HEAD
             }
             if (opposingPlayer.shieldActive) {
                 std::cout << opposingPlayer.name << "'s " << opposingPlayer.shieldName << " blocked " << damage - finalDamage << " damage.";
->>>>>>> d3dbea978dc062b665e258328081034c8b8103f4
             }
             std::cout << "\n";
             std::cout << "\nThat's a miss!\n\n";
@@ -204,15 +202,12 @@ void turn(Player& player1, Player& player2) {
                 std::cout << "> ";
             } else if (attak == 5) {
                 std::cout << "You already have a " << player1.minionName << " active!\n";
-<<<<<<< HEAD
                 std::cout << "> ";
             } else if (attak == 6){
                 std::cout << "You don't have any " << player1.shieldName << "s left!\n";
                 std::cout << "> ";
             } else if (attak == 7){
                 std::cout << "You already have a " << player1.shieldName << " active!";
-=======
->>>>>>> d3dbea978dc062b665e258328081034c8b8103f4
                 std::cout << "> ";
             } else {
                 break;
@@ -248,40 +243,40 @@ void start(Player& player1, Player& player2) {
 }
 
 int main() {
-    Player john;
-    john.name = data["PLAYER1"]["NAME"].get<std::string>();
-    john.health = data["PLAYER1"]["STARTING_HEALTH"].get<int>();
-    john.max_health = data["PLAYER1"]["STARTING_HEALTH"].get<int>();
-    john.healingPotions = data["PLAYER1"]["ATTACKS"]["HEALING_POTIONS"]["AMOUNT"].get<int>();
-    john.HealingPotionsName = data["PLAYER1"]["ATTACKS"]["HEALING_POTIONS"]["NAME"];
-    john.minions = data["PLAYER1"]["ATTACKS"]["MINIONS"]["AMOUNT"].get<int>();
-    john.minionActive = false;
-    john.minionTurns =  data["PLAYER1"]["ATTACKS"]["MINIONS"]["TURNS"].get<int>();
-    john.minionMaxTurns = data["PLAYER1"]["ATTACKS"]["MINIONS"]["TURNS"].get<int>();
-    john.minionName = data["PLAYER1"]["ATTACKS"]["MINIONS"]["NAME"].get<std::string>();
-    john.shieldTurns = 0;
-    john.shieldMaxTurns = data["PLAYER1"]["ATTACKS"]["SHIELDS"]["AMOUNT"].get<int>();
-    john.shieldActive = false;
-    john.shieldDamage = data["PLAYER1"]["ATTACKS"]["SHIELDS"]["DIVIDE_DAMAGE"].get<int>();
-    john.shields = data["PLAYER1"]["ATTACKS"]["SHIELDS"]["AMOUNT"].get<int>();
-    john.shieldName = data["PLAYER1"]["ATTACKS"]["SHIELDS"]["NAME"].get<std::string>();
-    Player tim;
-    tim.name = data["PLAYER2"]["NAME"];
-    tim.health = data["PLAYER2"]["STARTING_HEALTH"].get<int>();
-    tim.max_health = data["PLAYER2"]["STARTING_HEALTH"].get<int>();
-    tim.healingPotions = data["PLAYER2"]["ATTACKS"]["HEALING_POTIONS"]["AMOUNT"].get<int>();
-    tim.HealingPotionsName = data["PLAYER2"]["ATTACKS"]["HEALING_POTIONS"]["NAME"].get<std::string>();
-    tim.minions = data["PLAYER2"]["ATTACKS"]["MINIONS"]["AMOUNT"].get<int>();
-    tim.minionActive = false;
-    tim.minionTurns = data["PLAYER2"]["ATTACKS"]["MINIONS"]["TURNS"].get<int>();
-    tim.minionMaxTurns = data["PLAYER2"]["ATTACKS"]["MINIONS"]["TURNS"].get<int>();
-    tim.minionName = data["PLAYER2"]["ATTACKS"]["MINIONS"]["NAME"].get<std::string>();
-    tim.shieldTurns = 0;
-    tim.shieldMaxTurns = data["PLAYER2"]["ATTACKS"]["SHIELDS"]["AMOUNT"].get<int>();
-    tim.shieldActive = false;
-    tim.shieldDamage = data["PLAYER2"]["ATTACKS"]["SHIELDS"]["DIVIDE_DAMAGE"].get<int>();
-    tim.shields = data["PLAYER2"]["ATTACKS"]["SHIELDS"]["AMOUNT"].get<int>();
-    tim.shieldName = data["PLAYER2"]["ATTACKS"]["SHIELDS"]["NAME"].get<std::string>();
-    start(john, tim);
+    Player p1;
+    p1.name = data["PLAYER1"]["NAME"].get<std::string>();
+    p1.health = data["PLAYER1"]["STARTING_HEALTH"].get<int>();
+    p1.max_health = data["PLAYER1"]["STARTING_HEALTH"].get<int>();
+    p1.healingPotions = data["PLAYER1"]["ATTACKS"]["HEALING_POTIONS"]["AMOUNT"].get<int>();
+    p1.HealingPotionsName = data["PLAYER1"]["ATTACKS"]["HEALING_POTIONS"]["NAME"];
+    p1.minions = data["PLAYER1"]["ATTACKS"]["MINIONS"]["AMOUNT"].get<int>();
+    p1.minionActive = false;
+    p1.minionTurns =  data["PLAYER1"]["ATTACKS"]["MINIONS"]["TURNS"].get<int>();
+    p1.minionMaxTurns = data["PLAYER1"]["ATTACKS"]["MINIONS"]["TURNS"].get<int>();
+    p1.minionName = data["PLAYER1"]["ATTACKS"]["MINIONS"]["NAME"].get<std::string>();
+    p1.shieldTurns = 0;
+    p1.shieldMaxTurns = data["PLAYER1"]["ATTACKS"]["SHIELDS"]["AMOUNT"].get<int>();
+    p1.shieldActive = false;
+    p1.shieldDamage = data["PLAYER1"]["ATTACKS"]["SHIELDS"]["DIVIDE_DAMAGE"].get<int>();
+    p1.shields = data["PLAYER1"]["ATTACKS"]["SHIELDS"]["AMOUNT"].get<int>();
+    p1.shieldName = data["PLAYER1"]["ATTACKS"]["SHIELDS"]["NAME"].get<std::string>();
+    Player p2;
+    p2.name = data["PLAYER2"]["NAME"];
+    p2.health = data["PLAYER2"]["STARTING_HEALTH"].get<int>();
+    p2.max_health = data["PLAYER2"]["STARTING_HEALTH"].get<int>();
+    p2.healingPotions = data["PLAYER2"]["ATTACKS"]["HEALING_POTIONS"]["AMOUNT"].get<int>();
+    p2.HealingPotionsName = data["PLAYER2"]["ATTACKS"]["HEALING_POTIONS"]["NAME"].get<std::string>();
+    p2.minions = data["PLAYER2"]["ATTACKS"]["MINIONS"]["AMOUNT"].get<int>();
+    p2.minionActive = false;
+    p2.minionTurns = data["PLAYER2"]["ATTACKS"]["MINIONS"]["TURNS"].get<int>();
+    p2.minionMaxTurns = data["PLAYER2"]["ATTACKS"]["MINIONS"]["TURNS"].get<int>();
+    p2.minionName = data["PLAYER2"]["ATTACKS"]["MINIONS"]["NAME"].get<std::string>();
+    p2.shieldTurns = 0;
+    p2.shieldMaxTurns = data["PLAYER2"]["ATTACKS"]["SHIELDS"]["AMOUNT"].get<int>();
+    p2.shieldActive = false;
+    p2.shieldDamage = data["PLAYER2"]["ATTACKS"]["SHIELDS"]["DIVIDE_DAMAGE"].get<int>();
+    p2.shields = data["PLAYER2"]["ATTACKS"]["SHIELDS"]["AMOUNT"].get<int>();
+    p2.shieldName = data["PLAYER2"]["ATTACKS"]["SHIELDS"]["NAME"].get<std::string>();
+    start(p1, p2);
     return 0;
 }
